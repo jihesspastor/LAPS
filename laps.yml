@@ -1,0 +1,59 @@
+--- # Local Administrator Password (LAPS) Installation
+- hosts: Local
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  tasks:
+    - name: Get LAPS Installation package from S3
+      aws_s3:
+        bucket: ansible-jimhess
+        object: laps-role/LAPS.x64.msi
+        dest: /tmp/laps.x64.msi
+        mode: get
+
+- hosts: '{{ hosts }}'
+  gather_facts: no
+  tasks:
+    - name: Ping Window servers to ensure network connectivity
+      win_ping:
+
+    - name: Create Installation Directory
+      win_file:
+        path: C:\Ansible
+        state: directory
+
+    - name: When did the playbook start
+      win_shell: get-date > C:\Ansible\start_of_laps_playbook.log
+
+    - name: Copy the LAPS MSI package to the target servesr
+      win_copy:
+        src: /tmp/laps.x64.msi
+        dest: C:\Ansible\
+
+    - name: Install the LAPS MSI package
+      win_package: 
+        path: C:\Ansible\laps.x64.msi 
+        state: present 
+        arguments: /quiet
+        register: result
+
+    - debug:
+        var: result
+
+    - name: Cleanup Installation Files on target servers
+      win_file:
+        path: C:\Ansible\laps.x64.msi
+        state: absent
+
+    - name: When did the playbook stop
+      win_shell: get-date > C:\Ansible\stop_of_laps_playbook.log
+
+- hosts: Local
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  tasks:
+    - name: Cleanup Installation Files on Ansible Control Center
+      file:
+        path: /tmp/laps.x64.msi
+        state: absent

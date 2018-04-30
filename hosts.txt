@@ -1,0 +1,73 @@
+[Local]
+localhost
+
+[Local:vars]
+ansible_connection=local
+
+[Amazon]
+172.31.87.114   # Amazon Linux Server
+
+[Amazon:vars]
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/MyKeyPair.pem
+
+[Redhat]
+172.31.33.142   # RHEL 7 Linux Server  
+172.31.86.78    # RHEL 7 Linux Server
+
+[Redhat:vars]
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/MyKeyPair.pem
+
+[Suse]
+172.31.93.116   # SUSE Version 11 Server
+
+[Suse:vars]
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/MyKeyPair.pem
+
+[Ubuntu]
+172.31.95.110   # Ubuntu #61 16.04
+
+[Ubuntu:vars]
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/MyKeyPair.pem
+ansible_user = ubuntu
+ansible_python_interpreter=/usr/bin/python3
+
+[Webservers]
+172.31.87.114   # Amazon Linux Server
+172.31.33.142   # RHEL 7 Linux Server
+172.31.86.78    # RHEL 7 Linux Server
+172.31.95.110   # Ubuntu #61 16.04[Windows]
+
+[Webservers:vars]
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/MyKeyPair.pem
+
+[Windows]
+dc1             # Windows 2016 Server DC
+ansibletestsrv1 # Windows 2016 Member Server
+
+[Windows:vars]
+ansible_user = administrator@HESS.LOCAL
+ansible_password = mdM1iagl1
+ansible_port = 5985
+ansible_connection = winrm
+ansible_winrm_transport = kerberos
+
+[Windows_DC]
+dc1.hess.local             # Windows 2016 Server DC
+
+[Windows_DC:vars]
+ansible_user = administrator@HESS.LOCAL
+ansible_password = mdM1iagl1
+ansible_port = 5985
+ansible_connection = winrm
+ansible_winrm_transport = kerberos
+
+[Windows_member]
+ansibletestsrv1.hess.local  # Windows 2016 Member Server
+
+[Windows_member:vars]
+ansible_user = administrator@HESS.LOCAL
+ansible_password = mdM1iagl1
+ansible_port = 5985
+ansible_connection = winrm
+ansible_winrm_transport = kerberos
+
